@@ -11,7 +11,8 @@ class Animal extends Model
         'tipus',
         'pes',
         'enfermetat',
-        'comentaris'
+        'comentaris',
+        'id_propietari'
     ];
 
 }
