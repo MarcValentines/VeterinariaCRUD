@@ -18,20 +18,25 @@ class AnimalController extends Controller
 
     //añadir nuevo animal
     public function store(Request $request){
-        //validación basica
-        if(!$request->nom || !$request->tipus || !$request->pes || !$request->id_persona){
-            return response()->json(['error' => 'faltan datos obligatorios']);
-        }
 
-        $animal = Animal::create([
-            'nom' => $request->nom,
-            'tipus' => $request->tipus,
-            'pes' => $request->pes,
-            'enfermetat' => $request->enfermetat,
-            'comentaris' => $request->comentaris,
-            'id_persona' => $request->id_persona
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'tipus' => 'required|in:gos,gat,conill,rata',
+            'pes' => 'required|numeric',
+            'enfermetat' => 'nullable|string|max:255',
+            'comentaris' => 'nullable|string',
+            'id_persona' => 'required|integer|exists:propietari,id'
         ]);
 
+        $animal = new Animal();
+        $animal->nom = $validated['nom'];
+        $animal->tipus = $validated['tipus'];
+        $animal->pes = $validated['pes'];
+        $animal->enfermetat = $validated['enfermetat'] ?? null;
+        $animal->comentaris = $validated['comentaris'] ?? null;
+        $animal->id_persona = $validated['id_persona'];
+        
+        $animal->save();
         return new AnimalResource($animal);
     }
 
@@ -54,14 +59,22 @@ class AnimalController extends Controller
             return response()->json(['ERROR' => 'No se ha encontrado el animal']);
         }
 
-        $animal->nom = $request->nom ?? $animal->nom;
-        $animal->tipus = $request->tipus ?? $animal->tipus;
-        $animal->pes = $request->pes ?? $animal->pes;
-        $animal->enfermetat = $request->enfermetat ?? $animal->enfermetat;
-        $animal->comentaris = $request->comentaris ?? $animal->comentaris;
-        $animal->id_persona = $request->id_persona ?? $animal->id_persona;
+        //validaciones básicas
+        $validated = $request->validate([
+            'nom' => 'sometimes|required|string|max:255',
+            'tipus' => 'sometimes|required|in:gos,gat,conill,rata',
+            'pes' => 'sometimes|required|numeric',
+            'enfermetat' => 'nullable|string|max:255',
+            'comentaris' => 'nullable|string',
+            'id_persona' => 'sometimes|required|integer|exists:propietari,id'
+        ]);
 
-        $animal::save();
+        //actualizar solo campos que vienen en la petición
+        foreach ($validated as $key => $value) {
+            $animal->$key = $value;
+        }
+
+        $animal->save();
 
         return new AnimalResource($animal);
 
