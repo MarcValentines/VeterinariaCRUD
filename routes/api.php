@@ -8,3 +8,5 @@ use App\Http\Controllers\PropietariController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+Route::get('/animal/list', [AnimalController::class, 'index']);
