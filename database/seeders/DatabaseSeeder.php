@@ -21,5 +21,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        //llamar a los seeder de los animales y propietarios
+        $this->call([
+            PropietariSeeder::class,
+            AnimalSeeder::class,
+        ]);
     }
 }
