@@ -10,4 +10,8 @@ class Propietari extends Model
         'nom',
         'cognom'
     ];
+
+    public function animals() {
+        return $this->hasMany(Animal::class, 'id_persona')
+    }
 }

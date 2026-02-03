@@ -12,7 +12,11 @@ class Animal extends Model
         'pes',
         'enfermetat',
         'comentaris',
-        'id_propietari'
+        'id_persona'
     ];
+
+    public function propietari() {
+        return $this->belongsTo(Propietari::class, 'id_persona');
+    }
 
 }
