@@ -12,6 +12,6 @@ class Propietari extends Model
     ];
 
     public function animals() {
-        return $this->hasMany(Animal::class, 'id_persona')
+        return $this->hasMany(Animal::class, 'id_persona');
     }
 }

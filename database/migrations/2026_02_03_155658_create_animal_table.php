@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('pes', 5, 2);
             $table->string('enfermetat')->nullable();
             $table->text('comentaris')->nullable();
-            $table->foreignId('id_persona')->constrained('propietari')->onDelete('cascade');
+            $table->foreignId('id_persona')->constrained('propietaris')->onDelete('cascade');
             $table->timestamps();
         });
     }
