@@ -25,7 +25,7 @@ class AnimalController extends Controller
             'pes' => 'required|numeric',
             'enfermetat' => 'nullable|string|max:255',
             'comentaris' => 'nullable|string',
-            'id_persona' => 'required|integer|exists:propietari,id'
+            'id_persona' => 'required|integer|exists:propietaris,id'
         ]);
 
         $animal = new Animal();
@@ -66,16 +66,17 @@ class AnimalController extends Controller
             'pes' => 'sometimes|required|numeric',
             'enfermetat' => 'nullable|string|max:255',
             'comentaris' => 'nullable|string',
-            'id_persona' => 'sometimes|required|integer|exists:propietari,id'
+            'id_persona' => 'sometimes|required|integer|exists:propietaris,id'
         ]);
 
-        //actualizar solo campos que vienen en la petición
-        foreach ($validated as $key => $value) {
-            $animal->$key = $value;
-        }
-
-        $animal->save();
-
+        $animal->update([
+            'nom' => $validated['nom'] ?? $animal->nom,
+            'tipus' => $validated['tipus'] ?? $animal->tipus,
+            'pes' => $validated['pes'] ?? $animal->pes,
+            'enfermetat' => $validated['enfermetat'] ?? $animal->enfermetat,
+            'comentaris' => $validated['comentaris'] ?? $animal->comentaris,
+            'id_persona' => $validated['id_persona'] ?? $animal->id_persona
+        ]);
         return new AnimalResource($animal);
 
     }
