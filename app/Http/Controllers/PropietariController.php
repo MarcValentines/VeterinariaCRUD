@@ -19,14 +19,15 @@ class PropietariController extends Controller
     //crear un nou propietari
     public function store(Request $request) {
         
-        if (!$request->nom || !$request->cognom) {
-            return response()->json(['error' => 'Faltan datos obligatorios']);
-        }
-        
-        $propietari = Propietari::create([
-            'nom' => $request->nom,
-            'cognom' => $request->cognom
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'cognom' => 'required|string|max:255',
         ]);
+
+        $propietari = new Propietari();
+        $propietari->nom = $validated['nom'];
+        $propietari->cognom = $validated['cognom'];
+        $propietari->save();
 
         return new PropietariResource($propietari);
     }
@@ -52,11 +53,16 @@ class PropietariController extends Controller
         }
 
         //actuialitzar camps
-        $propietari->nom = $request->nom ?? $propietari->nom;
-        $propietari->cognom = $request->cognom ?? $propietari->cognom;
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'cognom' => 'required|string|max:255',
+        ]);
+
+        foreach ($validated as $key => $value) {
+            $propietari->$key = $value;
+        }
 
         $propietari->save();
-
         return new PropietariResource($propietari);
     }
 
