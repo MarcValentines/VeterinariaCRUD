@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Propietari;
-use Faker\Factory as Faker;
 
 class PropietariSeeder extends Seeder
 {
@@ -14,13 +13,6 @@ class PropietariSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Faker::create();
-
-        for($i = 0; $i < 20; $i++) {
-            Propietari::create([
-                'nom' => $faker->firstName,
-                'cognom' => $faker->lastName,
-            ]);
-        }
+        Propietari::factory()->count(20)->create();
     }
 }
