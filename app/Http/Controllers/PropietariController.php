@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\AnimalController;
 use App\Http\Resources\PropietariResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Animal;
 use App\Models\Propietari;
 
 class PropietariController extends Controller
@@ -18,7 +16,7 @@ class PropietariController extends Controller
 
     //crear un nou propietari
     public function store(Request $request) {
-        
+
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'cognom' => 'required|string|max:255',
@@ -37,7 +35,7 @@ class PropietariController extends Controller
         $propietari = Propietari::find($id);
 
         if(!$propietari) {
-            return response()->json(['ERROR' => `No s'ha trobat el propietari`]);
+            return response()->json(['ERROR' => 'No s ha trobat el propietari']);
         }
 
         return new PropietariResource($propietari);
@@ -49,7 +47,7 @@ class PropietariController extends Controller
         $propietari = Propietari::find($id);
 
         if(!$propietari) {
-            return response()->json(['ERROR' => `No s'ha trobat el propietari`]);
+            return response()->json(['ERROR' => 'No sha trobat el propietari']);
         }
 
         //actuialitzar camps
@@ -70,7 +68,7 @@ class PropietariController extends Controller
         $propietari = Propietari::find($id);
 
         if(!$propietari) {
-            return response()->json(['ERROR' => `No s'ha trobat el propietari`]);
+            return response()->json(['ERROR' => 'No s ha trobat el propietari']);
         }
 
         $propietari->delete();
